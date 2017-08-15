@@ -1,6 +1,6 @@
-## PyBites Code Challenge 31 - Image Manipulation With Pillow
+## PyBites Banner Generator
 
-### Submission: PyBites Banner Generator
+*Submission project for PyBites Code Challenge 31 - Image Manipulation With Pillow*
 
 I made this utility to create quick but nice banners for PyBites Articles / Challenges / News / Special. However I think the code can easily be extended or modified to use it for your own needs.
 
