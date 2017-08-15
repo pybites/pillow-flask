@@ -40,6 +40,6 @@ The last option of the form controls the location of the second image titled *Us
 
 * This week I will write a part 2 how I wrapped the original `banner.py` (command line) script into this Flask app. If I don't get to update this readme, the previous article will link to it ...
 
-### Try it yourself
+### Try it yourself
 
 I deployed the app to Heroku using [Julian's nice tutorial](https://pybit.es/deploy-flask-heroku.html). You can try it out [here](https://pybites-banners.herokuapp.com/).
