@@ -1,0 +1,7 @@
+*swp
+*pyc
+__pycache__
+images/*png
+images/*jpg
+out.png
+venv
