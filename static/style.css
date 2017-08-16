@@ -7,6 +7,9 @@ body {
 form {
 	margin: 20px 0;
 }
+form, table {
+	width: 400px;
+}
 div {
   padding: 10px 0;
 }
@@ -31,4 +34,14 @@ select#image_url1 option[value="news"] {
 }
 select#image_url1 option[value="special"] { 
   background-image:url("../assets/pybites/special.png"); 
+}
+#imageForm {
+	float: left;
+}
+#imageCache {
+	float: right;
+	margin-top: 65px; 
+}
+footer {
+	clear: both;
 }
