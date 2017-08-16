@@ -1,8 +1,8 @@
 from collections import namedtuple
 import os
-import sys
 
 from PIL import Image, ImageDraw, ImageFont
+import requests
 
 ASSET_DIR = 'assets'
 DEFAULT_WIDTH = 600
@@ -11,6 +11,7 @@ DEFAULT_CANVAS_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 DEFAULT_OUTPUT_FILE = 'out.png'
 RESIZE_PERCENTAGE = 0.8
 DEFAULT_TOP_MARGIN = int(((1 - 0.8) * DEFAULT_HEIGHT) / 2)
+IMAGES = 'images'
 WHITE, BLACK = (255, 255, 255), (0, 0, 0)
 WHITE_TRANSPARENT_OVERLAY = (255, 255, 255, 178)
 TEXT_SIZE = 24
@@ -92,15 +93,32 @@ class Banner:
         self.image.save(self.output_file)
 
 
-def generate_banner(args):
-    image1 = args[0]
-    image2 = args[1]
-    text = args[2]
-    bg = bool(args[3]) if len(args) == 4 else False
+def _download_image(from_url, to_file, chunk_size=2000):
+    r = requests.get(from_url, stream=True)
+
+    with open(to_file, 'wb') as fd:
+        for chunk in r.iter_content(chunk_size):
+            fd.write(chunk)
+
+
+def get_image(image_url):
+    basename = os.path.basename(image_url)
+    local_image = os.path.join(IMAGES, basename)
+
+    if not os.path.isfile(local_image):
+        _download_image(image_url, local_image)
+
+    return local_image
+
+
+def generate_banner(img_banner):
+    image1 = img_banner.image1
+    image2 = get_image(img_banner.image2)
+    text = img_banner.text
 
     banner = Banner()
 
-    if bg:
+    if img_banner.background:
         banner.add_background(image2)
     else:
         banner.add_image(image2, resize=True, right=True)
@@ -116,14 +134,3 @@ def generate_banner(args):
     banner.add_text(font)
 
     banner.save_image()
-
-
-if __name__ == '__main__':
-    script = sys.argv.pop(0)
-    args = sys.argv
-
-    if len(args) not in [3, 4]:
-        print('Usage: {} img1 img2 text (opt bool: 2nd img is bg)'.format(script))  # noqa E501
-        sys.exit(1)
-
-    generate_banner(args)
