@@ -5,3 +5,5 @@ images/*png
 images/*jpg
 out.png
 venv
+banners.db
+app.log
