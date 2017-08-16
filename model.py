@@ -3,8 +3,12 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banners.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or \
+    'sqlite:///' + os.path.join(basedir, 'banners.db')
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  # mute warnings
 app.secret_key = os.getenv('SECRET_KEY')
 
