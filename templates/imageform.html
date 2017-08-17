@@ -12,17 +12,27 @@
 			</fieldset>
 		</form>
 
-	<table class="pure-table" id="imageCache">
-		<thead>
-			<th>Cached Banners</th>
-		</thead>
-		<tbody>
-			{% for banner in banners %}
-			<tr>
-				<td><a href="{{ url_for('image_inputs', bannerid=banner.id) }}">{{ banner.text }}</a></td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<table class="pure-table" id="imageCache">
+  <thead>
+    <th>Cached Banners</th>
+  </thead>
+  <tbody>
+    {% if session['logged_in'] %}
+
+      {% for banner in banners %}
+        <tr>
+          <td><a href="{{ url_for('index', bannerid=banner.id) }}">{{ banner.text }}</a></td>
+        </tr>
+      {% endfor %}
+
+    {% else %}
+
+      <tr>
+        <td><a href="{{ url_for('login') }}">login</a> to cache your banners</td>
+      </tr>
+
+    {% endif %}
+  </tbody>
+</table>
 
 	{% endblock %}

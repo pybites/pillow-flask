@@ -57,7 +57,7 @@ def login():
             status_code = 401
         else:
             session['logged_in'] = user
-            return redirect(url_for('image_inputs'))
+            return redirect(url_for('index'))
     return render_template('login.html', user=user), status_code
 
 
@@ -69,8 +69,7 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<bannerid>', methods=['GET', 'POST'])
-@login_required
-def image_inputs(bannerid=None):
+def index(bannerid=None):
     form = ImageForm(request.form)
     cached_banners = Banner.query.all()
 
@@ -101,7 +100,8 @@ def image_inputs(bannerid=None):
                            text=text,
                            background=background)
 
-        _store_banner(banner)
+        if session['logged_in']:
+            _store_banner(banner)
 
         try:
             generate_banner(banner)
