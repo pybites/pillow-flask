@@ -12,6 +12,7 @@ def get_basename(img):
 
 
 class ImageForm(Form):
+    name = StringField('Banner Name', [validators.DataRequired()])
     image_url1 = SelectField(
         'PyBites Logo Theme',
         choices=[(img, get_basename(img)) for img in pybites_logos]

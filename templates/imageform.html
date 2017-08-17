@@ -4,6 +4,7 @@
 		{% from "_formhelpers.html" import render_field %}
 		<form class="pure-form pure-form-stacked" id="imageForm" method=post>
 			<fieldset>
+				{{ render_field(form.name) }}
 				{{ render_field(form.image_url1) }}
 				{{ render_field(form.image_url2) }}
 				{{ render_field(form.text) }}
@@ -21,7 +22,7 @@
 
       {% for banner in banners %}
         <tr>
-          <td><a href="{{ url_for('index', bannerid=banner.id) }}">{{ banner.text }}</a></td>
+          <td><a href="{{ url_for('index', bannerid=banner.id) }}">{{ banner.name }}</a></td>
         </tr>
       {% endfor %}
 

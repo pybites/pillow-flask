@@ -15,7 +15,7 @@ from banner.banner import generate_banner
 logging.basicConfig(filename='app.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-ImgBanner = namedtuple('Banner', 'image1 image2 text background')
+ImgBanner = namedtuple('Banner', 'name image1 image2 text background')
 
 
 def login_required(test):
@@ -31,9 +31,10 @@ def login_required(test):
 
 
 def _store_banner(data):
-    banner = Banner.query.filter_by(text=data.text).first()
+    banner = Banner.query.filter_by(name=data.name).first()
     # if banner in db, update record, if not add it
     if banner:
+        banner.name = data.name
         banner.image_url1 = data.image1
         banner.image_url2 = data.image2
         banner.text = data.text
@@ -82,6 +83,7 @@ def index(bannerid=None):
             if not banner:
                 abort(404)
 
+            form.name.data = banner.name
             form.image_url1.data = banner.image_url1
             form.image_url2.data = banner.image_url2
             form.text.data = banner.text
@@ -89,12 +91,14 @@ def index(bannerid=None):
 
     # else if post request validate and generate banner image
     elif request.method == 'POST' and form.validate():
+        name = form.name.data
         image1 = form.image_url1.data
         image2 = form.image_url2.data
         text = form.text.data
         background = form.background.data
 
-        banner = ImgBanner(image1=image1,
+        banner = ImgBanner(name=name,
+                           image1=image1,
                            image2=image2,
                            text=text,
                            background=background)
