@@ -1,5 +1,6 @@
 from collections import namedtuple
 import os
+import time
 
 from PIL import Image, ImageDraw, ImageFont
 import requests
@@ -30,9 +31,14 @@ class Banner:
         self.width = size[0]
         self.height = size[1]
         self.bgcolor = bgcolor
-        self.output_file = output_file
+        self.output_file = self._create_uniq_file_name(output_file)
         self.image = Image.new('RGBA', self.size, self.bgcolor)
         self.image_coords = []
+
+    def _create_uniq_file_name(self, outfile):
+        fname, ext = os.path.splitext(outfile)
+        tstamp = str(time.time()).replace('.', '_')
+        return '{}_{}{}'.format(fname, tstamp, ext)
 
     def _image_gt_canvas_size(self, img):
         return img.size[0] > self.image.size[0] or \
@@ -134,3 +140,5 @@ def generate_banner(img_banner):
     banner.add_text(font)
 
     banner.save_image()
+
+    return banner.output_file

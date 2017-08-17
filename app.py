@@ -10,7 +10,6 @@ from forms import ImageForm
 from model import app, db, Banner
 
 from banner.banner import generate_banner
-from banner.banner import DEFAULT_OUTPUT_FILE as outfile
 
 
 logging.basicConfig(filename='app.log', level=logging.INFO)
@@ -104,9 +103,10 @@ def index(bannerid=None):
             _store_banner(banner)
 
         try:
-            generate_banner(banner)
+            outfile = generate_banner(banner)
         except Exception as exc:
             logger.error('Error generating banner, exc: {}'.format(exc))
+            abort(400)
 
         if os.path.isfile(outfile):
             return send_file(outfile, mimetype='image/png', cache_timeout=1)
