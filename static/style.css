@@ -17,7 +17,7 @@ input, select, textarea {
   width: 300px;
 }
 textarea {
-	height: 150px;
+	height: 100px;
 }
 button {
   clear: both; 
