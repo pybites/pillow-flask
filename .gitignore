@@ -1,9 +1,9 @@
 *swp
 *pyc
 __pycache__
-images/*png
-images/*jpg
-out.png
+images/*
+!images/.gitkeep
+out*png
 venv
 banners.db
 app.log
