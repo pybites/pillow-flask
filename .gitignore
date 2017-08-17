@@ -3,7 +3,6 @@
 __pycache__
 images/*
 !images/.gitkeep
-out*png
 venv
 banners.db
 app.log

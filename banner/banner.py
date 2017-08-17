@@ -43,7 +43,8 @@ class Banner:
     def _create_uniq_file_name(self, outfile):
         fname, ext = os.path.splitext(outfile)
         tstamp = str(time.time()).replace('.', '_')
-        return '{}_{}{}'.format(fname, tstamp, ext)
+        uniq_fname = '{}_{}{}'.format(fname, tstamp, ext)
+        return os.path.join(IMAGES, uniq_fname)
 
     def _image_gt_canvas_size(self, img):
         return img.size[0] > self.image.size[0] or \
