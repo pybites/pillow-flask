@@ -17,7 +17,8 @@ IMAGES = 'images'
 WHITE, BLACK = (255, 255, 255), (0, 0, 0)
 WHITE_TRANSPARENT_OVERLAY = (255, 255, 255, 178)
 TEXT_FONT_TYPE = os.path.join(ASSET_DIR, 'SourceSansPro-Regular.otf')
-TEXT_PADDING_HOR, START_TEXT_PADDING_VERT = 10, 20
+TEXT_PADDING_HOR = 10
+Y_TEXT_START = 20
 
 # adjust CHARS_PER_LINE if you change TEXT_SIZE
 TEXT_SIZE = 24
@@ -73,6 +74,13 @@ class Banner:
         draw = ImageDraw.Draw(self.image)
         pillow_font = ImageFont.truetype(font.ttf, font.size)
 
+        # from https://stackoverflow.com/a/7698300
+        # if only 1 image use the extra space for text
+        single_image = len(self.image_coords) == 1
+        text_width = CHARS_PER_LINE * 1.5 if single_image else CHARS_PER_LINE
+
+        lines = textwrap.wrap(font.text, width=text_width)
+
         if font.offset:
             x_text, y_text = font.offset
         else:
@@ -81,15 +89,9 @@ class Banner:
                                 for img in self.image_coords)
 
             x_text = left_image_px + TEXT_PADDING_HOR
-            y_text = START_TEXT_PADDING_VERT
 
-        # from https://stackoverflow.com/a/7698300
-        if len(self.image_coords) == 1:
-            text_width = CHARS_PER_LINE * 1.5
-        else:
-            text_width = CHARS_PER_LINE
-
-        lines = textwrap.wrap(font.text, width=text_width)
+            # if <= 2 lines center them more vertically
+            y_text = Y_TEXT_START * 2 if len(lines) < 3 else Y_TEXT_START
 
         for line in lines:
             _, height = pillow_font.getsize(line)
