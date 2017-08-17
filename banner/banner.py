@@ -1,5 +1,6 @@
 from collections import namedtuple
 import os
+import textwrap
 import time
 
 from PIL import Image, ImageDraw, ImageFont
@@ -15,9 +16,12 @@ DEFAULT_TOP_MARGIN = int(((1 - 0.8) * DEFAULT_HEIGHT) / 2)
 IMAGES = 'images'
 WHITE, BLACK = (255, 255, 255), (0, 0, 0)
 WHITE_TRANSPARENT_OVERLAY = (255, 255, 255, 178)
+TEXT_FONT_TYPE = os.path.join(ASSET_DIR, 'SourceSansPro-Regular.otf')
+TEXT_PADDING_HOR, START_TEXT_PADDING_VERT = 10, 20
+
+# adjust CHARS_PER_LINE if you change TEXT_SIZE
 TEXT_SIZE = 24
-TEXT_FONT_TYPE = os.path.join(ASSET_DIR, 'Ubuntu-R.ttf')
-TEXT_PADDING_HOR, TEXT_PADDING_VERT = 10, 40
+CHARS_PER_LINE = 30
 
 Font = namedtuple('Font', 'ttf text color size offset')
 ImageDetails = namedtuple('Image', 'left top size')
@@ -70,15 +74,27 @@ class Banner:
         pillow_font = ImageFont.truetype(font.ttf, font.size)
 
         if font.offset:
-            offset = font.offset
+            x_text, y_text = font.offset
         else:
             # if no offset given put text alongside first image
             left_image_px = min(img.left + img.size[0]
                                 for img in self.image_coords)
-            offset = (left_image_px + TEXT_PADDING_HOR,
-                      TEXT_PADDING_VERT)
 
-        draw.text(offset, font.text, font.color, font=pillow_font)
+            x_text = left_image_px + TEXT_PADDING_HOR
+            y_text = START_TEXT_PADDING_VERT
+
+        # from https://stackoverflow.com/a/7698300
+        if len(self.image_coords) == 1:
+            text_width = CHARS_PER_LINE * 1.5
+        else:
+            text_width = CHARS_PER_LINE
+
+        lines = textwrap.wrap(font.text, width=text_width)
+
+        for line in lines:
+            _, height = pillow_font.getsize(line)
+            draw.text((x_text, y_text), line, font.color, font=pillow_font)
+            y_text += height
 
     def add_background(self, image, resize=False):
         img = Image.open(image).convert('RGBA')
