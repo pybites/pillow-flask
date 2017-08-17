@@ -17,7 +17,7 @@
     <th>Cached Banners</th>
   </thead>
   <tbody>
-    {% if session['logged_in'] %}
+    {% if session.get('logged_in') %}
 
       {% for banner in banners %}
         <tr>

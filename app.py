@@ -23,7 +23,7 @@ def login_required(test):
     '''From RealPython Flask course'''
     @wraps(test)
     def wrap(*args, **kwargs):
-        if 'logged_in' in session:
+        if session.get('logged_in'):
             return test(*args, **kwargs)
         else:
             flash('You need to log in first')
@@ -100,7 +100,7 @@ def index(bannerid=None):
                            text=text,
                            background=background)
 
-        if session['logged_in']:
+        if session.get('logged_in'):
             _store_banner(banner)
 
         try:

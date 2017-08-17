@@ -11,7 +11,7 @@
   <header>
     <h1>PyBites Banner Generator</h1>
       <p>
-        {% if session['logged_in'] %}
+        {% if session.get('logged_in') %}
           Hey {{ session['logged_in'] }}, <a href="{{ url_for('logout') }}">logout</a>
         {% endif%}
       </p>
