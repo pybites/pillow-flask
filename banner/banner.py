@@ -78,7 +78,7 @@ class Banner:
         # from https://stackoverflow.com/a/7698300
         # if only 1 image use the extra space for text
         single_image = len(self.image_coords) == 1
-        text_width = CHARS_PER_LINE * 1.2 if single_image else CHARS_PER_LINE
+        text_width = CHARS_PER_LINE * 1.4 if single_image else CHARS_PER_LINE
 
         lines = textwrap.wrap(font.text, width=text_width)
 
