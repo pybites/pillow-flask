@@ -6,7 +6,7 @@ import os
 from flask import abort, render_template, flash, redirect
 from flask import request, send_file, session, url_for
 
-from forms import ImageForm
+from forms import ImageForm, get_logos
 from model import app, db, Banner
 
 from banner.banner import generate_banner
@@ -14,6 +14,8 @@ from banner.banner import generate_banner
 
 logging.basicConfig(filename='app.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+PYBITES_SUBDIR = 'pybites'
 
 ImgBanner = namedtuple('Banner', 'name image1 image2 text background')
 
@@ -61,6 +63,18 @@ def login():
     return render_template('login.html', user=user), status_code
 
 
+def _get_form():
+    '''Get form. Logged out = python logo, logged in pybites logos'''
+    form = ImageForm(request.form)
+
+    # https://stackoverflow.com/a/16392248
+    if session.get('logged_in'):
+        logos = get_logos(subdir=PYBITES_SUBDIR)
+        form.image_url1.choices = logos
+
+    return form
+
+
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
@@ -70,7 +84,7 @@ def logout():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/<bannerid>', methods=['GET', 'POST'])
 def index(bannerid=None):
-    form = ImageForm(request.form)
+    form = _get_form()
     cached_banners = Banner.query.all()
 
     # if a get request with valid banner id prepopulate form
