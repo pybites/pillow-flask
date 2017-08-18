@@ -20,11 +20,20 @@ DEFAULT_LOGOS = get_logos()
 
 
 class ImageForm(Form):
-    name = StringField('Banner Name', [validators.DataRequired()])
+    name = StringField('Banner Name', [
+        validators.DataRequired(),
+        validators.Length(max=100)
+    ])
     image_url1 = SelectField(
         'Pick a Logo',
         choices=DEFAULT_LOGOS
     )
-    image_url2 = StringField('Second Image URL', [validators.DataRequired()])
-    text = TextAreaField('Text for Banner', [validators.DataRequired()])
+    image_url2 = StringField('Second Image URL', [
+        validators.DataRequired(),
+        validators.Length(max=500)
+    ])
+    text = TextAreaField('Text for Banner', [
+        validators.DataRequired(),
+        validators.Length(max=500)
+    ])
     background = BooleanField('Use Second Image as Background?', default=True)

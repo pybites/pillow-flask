@@ -19,9 +19,9 @@ db = SQLAlchemy(app)
 class Banner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))  # for caching banners
-    image_url1 = db.Column(db.String(30))  # from dropdown
-    image_url2 = db.Column(db.String(200))  # image URL
-    text = db.Column(db.String(200))
+    image_url1 = db.Column(db.String(100))  # from dropdown
+    image_url2 = db.Column(db.String(500))  # image URL
+    text = db.Column(db.String(500))
     background = db.Column(db.Boolean)
 
     def __init__(self, banner):
