@@ -10,7 +10,7 @@ itsdangerous==0.24
 Jinja2==2.9.6
 MarkupSafe==1.0
 olefile==0.44
-Pillow==4.2.1
+Pillow==6.2.0
 psycopg2==2.7.3
 requests==2.18.3
 SQLAlchemy==1.1.13
